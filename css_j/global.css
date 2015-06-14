@@ -1,0 +1,76 @@
+@CHARSET "ISO-8859-1";
+
+/*-------------------------Reference---------------------------------------- */
+.gentext { color: #514E44;font-family: tahoma;font-size: 12px; }
+.frame {border-style: solid;border-width: thin 1px;border-color: #8B8CFE;}
+img.thumb {height: 120px;	width: 120px;	border: 0px}
+img.smthumb {height: 80px;	width: 80px;	border:0px	}
+.xsmthumb {height: 50px;	width: 50px;	border:0px	}
+/* to eliminate the page from having a gap, add this to any html tag {margin-top: 0px; margin-bottom: 0px;}*/
+/*-------------------------Reference---------END---------------------------- */
+
+
+
+
+
+/* ------------------Main Page ----------------------------- */
+/*body  E1E1E1 */
+hr{color: gray; filter: alpha(opacity=20);-moz-opacity: .20;opacity: .20;}
+.idx-body{background: black;}
+
+div.idx-page {background: grey; width: 1000px; height: 1000px ;  }
+
+div.idx-page-topbanner {background: lightgray; font: bold 70px  tahoma ; color: #514E44;}
+
+	div.idx-page-locater{width: 100%; }
+	div.idx-page-locater a{text-decoration: none; color: #514E44;  margin: 2px; }
+	div.idx-page-locater a:hover{text-decoration: underline;}
+
+.idx-page-home-table{width: 100%; border-collapse: collapse; }
+
+.idx-page-home-table-c1{width: 20%; }
+.idx-page-home-table-c2{width: 55%; padding-left: 6px;}
+/* .idx-page-home-table-c3{width: 25%; padding: 6px;}  */
+
+
+
+
+/* This is for the window title bar, minimize and close buttons */
+.c-t{width: 100%; height: 30px; background: url("../img/tbar.gif"); font: bold 17px tahoma; color: #777777; overflow: hidden;}
+
+/* .c-t_min{width: 10px;}  .c-t_min:hover{background: grey; color: white; cursor: pointer;} */
+/* .c-t_close{width:10px;} .c-t_close:hover{background: grey; color: white; cursor: pointer;} */
+
+
+/*Styling for left menu*/
+div.c1-1{width: 100%; height: 400px; background: white; font: bold 19px tahoma;  }
+div.c1-1 a{text-decoration: none;   }
+div.c1-1 a:hover{text-decoration: underline;}
+
+ul.c1-1-menu-list {margin-top: 0px; list-style-type: none; }
+ul.c1-1-menu-list a{font: bold 14px tahoma ; color: gray; }
+
+/*Styling for left menu   END*/
+
+/*Styling for middle area*/
+div.c2-1{width: 100%; height: 400px; background: white; font: 13px arial; color: black;  display: inline-table;}
+div.c2-1 a{font: 13px arial; color: black; text-decoration: none; }
+div.c2-1 a:hover{text-decoration: underline;}
+
+/*Styling for middle area   END*/
+
+
+
+/* --------Here we can put formatting for the LOGIN, REGISTRATION, & UPDATE--------- */
+/*
+.form-login{font: 13px verdana ; color:white;}
+.form-registration{font: 13px verdana ; color:white;}
+.form-update{font: 13px verdana ; color:white;}
+*/
+/* --------Here we can put formatting for the LOGIN, REGISTRATION, & UPDATE---END--- */
+
+
+/* --------END----------main page ---------------END-------------- */
+
+
+
