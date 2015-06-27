@@ -28,6 +28,8 @@ include("Utils/LogMe.php");
 	    <!--Wijmo Widgets JavaScript-->
 	    <script src="http://cdn.wijmo.com/jquery.wijmo-open.all.2.1.0.min.js" type="text/javascript"></script> 
 	    <script src="http://cdn.wijmo.com/jquery.wijmo-complete.all.2.1.0.min.js" type="text/javascript"></script>
+
+	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
 	    		
 		<script type="text/javascript" src="css_j/j.js"></script>
 		<!-- <link rel="stylesheet" type="text/css" href="css_j/global.css" /> -->
