@@ -5,7 +5,7 @@ include ("Data/MemberUser/MemberUserDA.php");
 include("Utils/LogMe.php");
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 	<head>	
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -30,8 +30,7 @@ include("Utils/LogMe.php");
 	    <script src="http://cdn.wijmo.com/jquery.wijmo-complete.all.2.1.0.min.js" type="text/javascript"></script>
 
 	    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
-	    		
-		<script type="text/javascript" src="css_j/j.js"></script>
+	    
 		<!-- <link rel="stylesheet" type="text/css" href="css_j/global.css" /> -->
 		
 	<link rel="stylesheet" type="text/css" href="css_j/menutop.css" />
