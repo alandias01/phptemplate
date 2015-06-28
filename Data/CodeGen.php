@@ -41,9 +41,9 @@ class CodeGen
 	{
 		$this->FullPathToFile=$this->Folder."/".$this->ClassName."DA.php";
 		
-		$this->Columns[]=new ColumnObject("Word", "varchar(100)", true);
-		$this->Columns[]=new ColumnObject("Definition", "varchar(400)", false);
-		$this->Columns[]=new ColumnObject("Type", "varchar(10)", false);
+		$this->Columns[]=new ColumnObject("word", "varchar(100)", true);
+		$this->Columns[]=new ColumnObject("definition", "varchar(400)", false);
+		$this->Columns[]=new ColumnObject("type", "varchar(10)", false);
 	}
 	
 	function  CreateObjectFile()
