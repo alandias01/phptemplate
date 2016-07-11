@@ -1,61 +1,45 @@
 <?php
 
-class ColumnObject
-{
-	public $CName;
-	public $CType;
-	public $isPKey;
-	public $CRow;
-	
-	function ColumnObject($cname, $ctype, $ispkey)
-	{
-		$this->CName=$cname;
-		$this->CType=$ctype;
-		$this->isPKey=$ispkey;
-	}
-	
-	function CreateCol()
-	{
-		$this->CRow="$this->CName $this->CType";
-		
-		if ($this->isPKey) 
-		{
-			$this->CRow.=" not null primary key";
-		}
-		
-		return  $this->CRow;
-	}
-	
-}
-
 class CodeGen
 {
-	private $ClassName="VocabList";
-	private $Folder="Data";
-		
-	private $FullPathToFile;
-	public  $Columns=array();
+	private $dbname;
+	private $ipaddr;
+	private $dbuser;
+	private $dbpass;	
+	private $ClassName;
+	private $Columns=array();
+	
+	private $Folder;		
+	private $FullPathToFileDA;
+	private $FullPathToFileObject;
 	
 	
-	function CodeGen()
+	function CodeGen($dbname, $ipaddr, $dbuser, $dbpass,$tbname, &$colarr)
 	{
-		$this->FullPathToFile=$this->Folder."/".$this->ClassName."DA.php";
+		$this->dbname=$dbname;
+		$this->ipaddr=$ipaddr;
+		$this->dbuser=$dbuser;
+		$this->dbpass=$dbpass;		
+		$this->ClassName=$tbname;
+		$this->Columns=&$colarr;
 		
-		$this->Columns[]=new ColumnObject("Word", "varchar(100)", true);
-		$this->Columns[]=new ColumnObject("Definition", "varchar(400)", false);
-		$this->Columns[]=new ColumnObject("Type", "varchar(10)", false);
+		//$this->Folder="Data";
+		$this->Folder=$this->dbname."BizObjects/".$this->ClassName;		
+		$this->FullPathToFileDA=$this->Folder."/".$this->ClassName."DA.php";
+		$this->FullPathToFileObject=$this->Folder."/".$this->ClassName."Object.php";
+		
 	}
 	
-	function  CreateObjectFile()
-	{
-		$fileloc=$this->Folder."/".$this->ClassName."Object.php";
 		
-		if(file_exists($fileloc))
+	function  CreateObjectFile()
+	{				
+		if(file_exists($this->FullPathToFileObject))
 		{
 			die("File already exists");
 		}
 		
-		$file=fopen($fileloc,'a') or die ('no');
+		mkdir(dirname($this->FullPathToFileObject), 0777, true);
+		$file=fopen($this->FullPathToFileObject,'a') or die ('no');
 		
 		$str="<?php\r\n";
 		$str.="class $this->ClassName"."Object\r\n";
@@ -66,7 +50,7 @@ class CodeGen
 		}		
 		$str.="    \r\n";
 		
-		$str.="    function $this->ClassName"."Object(\$row)\r\n";
+		$str.="    function __construct(\$row)\r\n";
 		$str.="    {\r\n";
 		foreach($this->Columns as $col)
 		{
@@ -85,12 +69,14 @@ class CodeGen
 	
 	function CreateDA()
 	{
-		if(file_exists($this->FullPathToFile))
+		if(file_exists($this->FullPathToFileDA))
 		{
 			die("File already exists");
 		}
 		
-		$file=fopen($this->FullPathToFile,'a') or die ('no'); 	
+		mkdir(dirname($this->FullPathToFileDA), 0777, true);
+		
+		$file=fopen($this->FullPathToFileDA,'a') or die ('no'); 	
 				
 		fwrite($file, $this->CreateBeginningOfClass());
 		fwrite($file, $this->CreateCreateTable());
@@ -101,31 +87,31 @@ class CodeGen
 	}
 	
 	
-	function CreateBeginningOfClass()
+	private function CreateBeginningOfClass()
 	{
 		$str="<?php \r\n\r\n";
 		$str.="include(\"$this->ClassName"."Object.php\");\r\n\r\n";
-		$str.="class $this->ClassName\r\n";		
+		$str.="class $this->ClassName"."DA\r\n";		
 		$str.="{\r\n";
 		
-		$str.="    private \$conn=\"mysql:host=127.0.0.1;dbname=alantest;port=3307\";    \r\n";
-		$str.="    private \$user=\"root\";\r\n";
-		$str.="    private \$pw=\"nsxr\";\r\n";
+		$str.="    private \$conn=\"mysql:host=$this->ipaddr;dbname=$this->dbname;\";    \r\n";
+		$str.="    private \$user=\"$this->dbuser\";\r\n";
+		$str.="    private \$pw=\"$this->dbpass\";\r\n";
 		$str.="    private \$table=\"$this->ClassName\";\r\n\r\n";
 			
 		return $str;
 	}
 	
-	function CreateEndOfClass()
+	private function CreateEndOfClass()
 	{
 		$str="}\r\n";
 		$str.="?>\r\n";
 		return  $str;		
 	}
 	
-	function CreateCreateTable()
+	private function CreateCreateTable()
 	{
-		$str="    funtion CreateTable()\r\n";
+		$str="    function CreateTable()\r\n";
 		$str.="    {\r\n";
 		
 		$str.="        \$sql=\"CREATE TABLE $this->ClassName (";
@@ -146,11 +132,30 @@ class CodeGen
 		
 		$str.=");\";\r\n";
 		
+		$str.="        try\r\n";
+		$str.="        {\r\n";
+		
+		$str.="            \$dbh=new PDO(\$this->conn ,\$this->user, \$this->pw);\r\n";
+		$str.="            \$dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);\r\n";
+		$str.="            \$sth=\$dbh->prepare(\$sql);\r\n";
+		$str.="            \$sth->execute();\r\n\r\n";
+				
+		
+		$str.="        }\r\n";
+		
+		$str.="        catch (PDOException \$ex)\r\n";
+		$str.="        {\r\n";
+		$str.="            LogMe::LogMsg(\$ex->getMessage());\r\n";
+		$str.="            echo \$ex->getMessage();\r\n";
+		$str.="        }\r\n";
+		
+		
+		
 		$str.="    }\r\n\r\n";
 		return $str;		
 	}
 	
-	function CreateLoadAll()
+	private function CreateLoadAll()
 	{
 		$str="    function LoadAll()\r\n";
 		$str.="    {\r\n";
